@@ -3,7 +3,8 @@ name: Build ScalpBot APK
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build:
@@ -23,8 +24,10 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Accept Android SDK licenses
-  run: yes | sdkmanager --licenses
+        run: yes | sdkmanager --licenses
 
+      - name: Install Android SDK packages
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -40,3 +43,4 @@ jobs:
           name: ScalpBot-Demo-APK
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+          
